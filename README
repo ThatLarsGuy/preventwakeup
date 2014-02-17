@@ -1,0 +1,25 @@
+PreventWakeup - for Linux
+
+A brute-force approach for laptops that won't stay asleep!
+
+Version: 0.1
+
+
+This python script is a nasty hack, and I'm not proud of having to resort to writing it.
+
+Nonetheless, if you have a laptop like mine, that for reasons unknown will spontaneously awake from sleep at random intervals - this might help.
+
+It does the following:
+ * Ensure no device triggers are configured that might wake up your PC (USB, WoL, lid open, etc)
+ * Checks there are no Real Time Clock wake-ups scheduled, and logs them if there are
+ * Monitors/logs X idle time (just for troubleshooting purposes at this stage)
+ * Forces the computer back to sleep if the lid is closed and AC Power unplugged
+ * Logs all activity to a rolling log file
+
+It depends on the following commands being available on your system, that you may need to install via your distro's package management:
+ - pm-suspend (to force suspend)
+ - xprintidle (to monitor X idle time)
+ - acpi (To check state of AC vs battery)
+
+It was written for a Linux Mint system, so will likely work with other Ubuntu/Debian based distros.
+
