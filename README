@@ -23,3 +23,8 @@ It depends on the following commands being available on your system, that you ma
 
 It was written for a Linux Mint system, so will likely work with other Ubuntu/Debian based distros.
 
+
+You can run this script via a cronjob as root, to put your computer back to sleep if it wakes up while the lid is closed and it's on battery.  Here's an example crontab entry:
+*/5 * * * * /opt/preventwakeup/prevent_wakeup.py
+(This assumes you know what you're doing!  Eg: Scripts executed as root should not be writable by users other than root!)
+
