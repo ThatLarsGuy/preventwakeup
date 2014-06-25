@@ -75,12 +75,13 @@ def check_for_rtc_wakeup_alarms():
 			break
 
 
-def check_X_idle_time():
+def get_X_idle_time():
 	#eg: xprintidle
 	os.environ["DISPLAY"] = ":0.0"
 	proc = subprocess.Popen(["xprintidle"],stdout=subprocess.PIPE)
 	line = proc.stdout.readline().rstrip()
 	logger.info('X Idle Time: ' + line.rstrip() )
+	return(int(line.rstrip())/1000 )
 
 #####  MAIN ######
 
@@ -94,10 +95,13 @@ enforce_not_wakeup_trigger('EHC2')
 enforce_not_wakeup_trigger('HDEF')
 
 check_for_rtc_wakeup_alarms()
-check_X_idle_time()
 
-if get_lid_status() == 'closed'  and  get_AC_status() == 'battery':
-	logger.warning('Initiating suspend!')
+idle_seconds = get_X_idle_time()
+lid_status = get_lid_status()
+ac_status = get_AC_status()
+
+if (lid_status == 'closed'  or  idle_seconds > 600)  and  ac_status == 'battery':
+	logger.warning('Initiating suspend - lid_status: ' + lid_status + ' - idle_seconds:' + str(idle_seconds) + ' - ac_status: ' + ac_status)
 	try:
 		subprocess.call(["/usr/sbin/pm-suspend"])
 	except Exception, e:
